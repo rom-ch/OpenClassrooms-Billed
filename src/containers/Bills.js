@@ -47,7 +47,6 @@ export default class {
             return dateB - dateA;
           });
 
-
           const bills = snapshot.map(doc => {
             try {
               return {
@@ -67,6 +66,7 @@ export default class {
             }
           });
           // console.log("length", bills.length);
+          // console.log(bills);
           return bills;
         });
     }

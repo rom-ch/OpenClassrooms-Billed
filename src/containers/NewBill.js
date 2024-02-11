@@ -23,34 +23,36 @@ export default class NewBill {
       .files[0];
     const filePath = e.target.value.split(/\\/g);
     const fileName = filePath[filePath.length - 1];
-    if (
-      !fileName.includes(".jpeg") &&
-      !fileName.includes(".jpg") &&
-      !fileName.includes(".png")
-    ) {
-      this.document.querySelector(`input[data-testid="file"]`).value = "";
-      return alert(`Format invalide. Seuls les formats .jpg, .jpeg, .png sont acceptés`);
-    }
-    const formData = new FormData();
-    const email = JSON.parse(localStorage.getItem("user")).email;
-    formData.append("file", file);
-    formData.append("email", email);
+    const fileExtension = fileName.split(".").pop();
 
-    this.store
-      .bills()
-      .create({
-        data: formData,
-        headers: {
-          noContentType: true,
-        },
-      })
-      .then(({ fileUrl, key }) => {
-        this.billId = key;
-        this.fileUrl = fileUrl;
-        this.fileName = fileName;
-      })
-      .catch(error => console.error(error));
+    if (["jpeg", "jpg", "png"].includes(fileExtension)) {
+      const formData = new FormData();
+      const email = JSON.parse(localStorage.getItem("user")).email;
+      formData.append("file", file);
+      formData.append("email", email);
+
+      this.store
+        .bills()
+        .create({
+          data: formData,
+          headers: {
+            noContentType: true,
+          },
+        })
+        .then(({ fileUrl, key }) => {
+          this.billId = key;
+          this.fileUrl = fileUrl;
+          this.fileName = fileName;
+        })
+        .catch(error => console.error(error));
+    } else {
+      this.document.querySelector(`input[data-testid="file"]`).value = "";
+      return alert(
+        `Format invalide. Seuls les formats .jpg, .jpeg, .png sont acceptés`
+      );
+    }
   };
+
   handleSubmit = e => {
     e.preventDefault();
     const email = JSON.parse(localStorage.getItem("user")).email;
