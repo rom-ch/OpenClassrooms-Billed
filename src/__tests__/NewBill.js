@@ -3,7 +3,6 @@
  */
 
 import { screen, fireEvent } from "@testing-library/dom";
-import userEvent from "@testing-library/user-event";
 import NewBillUI from "../views/NewBillUI.js";
 import NewBill from "../containers/NewBill.js";
 
@@ -49,9 +48,6 @@ describe("Given I am connected as an employee", () => {
 
       const handleChangeFile = jest.fn(e => newBill.handleChangeFile(e));
       const input = screen.getByTestId("file");
-      // const file = new File(["expense.jpeg"], "expense.jpeg", {
-      //   type: "image/jpeg",
-      // });
 
       window.alert = jest.fn();
 
@@ -65,7 +61,6 @@ describe("Given I am connected as an employee", () => {
         },
       });
 
-      // userEvent.upload(input, file);
       jest.spyOn(window, "alert");
       expect(handleChangeFile).toHaveBeenCalled();
       console.log(input.files[0].name);
